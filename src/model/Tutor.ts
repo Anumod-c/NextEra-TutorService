@@ -24,6 +24,10 @@ const tutorSchema :Schema = new Schema({
         type:Date,
         required:true,
         default:Date.now
+    },
+    status:{
+        type:Boolean,
+        default:true
     }
 })
 

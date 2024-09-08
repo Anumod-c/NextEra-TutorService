@@ -1,3 +1,4 @@
+import { admincontroller } from "../../interface/controllers/adminController";
 import { tutorcontroller } from "../../interface/controllers/tutorController";
 import RabbitMQClient from "./client";
 export default class MessageHandler {
@@ -39,7 +40,16 @@ export default class MessageHandler {
             case 'tutor_google_login':
                 response = await tutorcontroller.googleLogin(data);
                 break
-             
+
+
+            case 'get_Tutors':
+                console.log('reached tutor service for fetching tutors');
+                response  = await admincontroller.getTutors()
+                break;
+             case 'get_tutor_count':
+                console.log('reached user service for fetching users');
+                response  = await admincontroller.getTutorCount()
+                break;
 
         }
         await RabbitMQClient.produce(response, correlationId, replyTo);
