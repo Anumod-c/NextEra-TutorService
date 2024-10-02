@@ -2,7 +2,7 @@ import { ITutor } from "../../domain/entites/ITutor";
 import { TutorRepository } from "../../domain/repositories/TutorRepository";
 import { generateOtp } from "../../utils/generateOtp";
 import config from "../../infrastructure/config/config";
-import {  TemporaryTutor } from "../../model/Temptutor";
+import { TemporaryTutor } from "../../model/Temptutor";
 import { OAuth2Client } from "google-auth-library";
 
 
@@ -44,8 +44,8 @@ export class TutorService {
     }
 
 
-    async verifyOtp(otpObject:{otp:string}):Promise<any>{
-        try{
+    async verifyOtp(otpObject: { otp: string }): Promise<any> {
+        try {
             const otp = otpObject.otp;
             console.log('Verifying OTP', otp);
             const temporaryTutor = await TemporaryTutor.findOne({ otp });
@@ -54,92 +54,92 @@ export class TutorService {
             } console.log('temporaryUser', temporaryTutor);
 
             const tutorData = temporaryTutor.tutorData;
-            if(!tutorData){
+            if (!tutorData) {
                 return { success: false, message: "User data is missing in the temporary record" };
             }
             const savedTutor = await this.tutorRepo.save(tutorData);
-            await TemporaryTutor.deleteOne({otp});
+            await TemporaryTutor.deleteOne({ otp });
             return {
                 message: "tutor data saved successfully",
                 success: true,
                 tutor_data: savedTutor
             }
-        }catch(error){
+        } catch (error) {
             if (error instanceof Error) {
                 throw new Error(`Error saving user:${error.message}`)
             }
-            
+
         }
     }
 
 
-    async tutorLogin(email:string,passord:string):Promise<any>{
+    async tutorLogin(email: string, passord: string): Promise<any> {
         try {
-            const result = await this.tutorRepo.checkTutor(email,passord);
+            const result = await this.tutorRepo.checkTutor(email, passord);
             return result
         } catch (error) {
             console.log('Error in useLogin in userCase');
         }
     }
 
-    async tutorForgotPass(email:string):Promise<any>{
-        try{
-            console.log(email,'EMAIL');
+    async tutorForgotPass(email: string): Promise<any> {
+        try {
+            console.log(email, 'EMAIL');
             const tutor = await this.tutorRepo.findByEmail(email);
-            if(tutor){
-                const forgotPass :boolean = true;
+            if (tutor) {
+                const forgotPass: boolean = true;
 
                 const otp = generateOtp();
-                console.log(otp,'otp');
+                console.log(otp, 'otp');
                 const tempData = new TemporaryTutor({
-                    otp:otp,
-                    email:email,
-                    createdAt:new Date()
+                    otp: otp,
+                    email: email,
+                    createdAt: new Date()
                 })
                 await tempData.save()
                 return { forgotPass, tutor: { email: tutor.email, name: tutor.name }, otp, success: true, message: "Found tutor with this email" }
-            }else {
+            } else {
                 return { success: false, message: "No tutor found with this email" };
             }
         } catch (error) {
             console.log('error in usecase for forgotpass', error)
         }
-        
+
     }
 
-    async verifyForgotPassOtp(otp:string):Promise<any>{
-        try{
-              // Implement OTP verification logic for forgot password
+    async verifyForgotPassOtp(otp: string): Promise<any> {
+        try {
+            // Implement OTP verification logic for forgot password
             console.log('Verifying forgot password OTP', { otp });
             // Example logic
             const result = await this.tutorRepo.verifyForgotPassOtp(otp);
             return result;
-        }catch (error) {
+        } catch (error) {
             console.error('Error verifying forgot password OTP:', error);
             return { success: false, message: 'Error verifying OTP' };
         }
     }
-    async resetPassword(email:string,passord:string):Promise<any>{
-        try{
-            const tutor = await this.tutorRepo.resetTutorPassword(email,passord);
-            if(tutor){
+    async resetPassword(email: string, passord: string): Promise<any> {
+        try {
+            const tutor = await this.tutorRepo.resetTutorPassword(email, passord);
+            if (tutor) {
                 return {
                     success: true,
                     message: "Password reset successfully",
                     tutor: { email: tutor.email, name: tutor.name }, // Optional: Basic user info
                     // token: token // Optional: New authentication token
                 };
-            }else {
+            } else {
                 return { success: false, message: "Tutor not found" };
             }
-        }catch (error) {
+        } catch (error) {
             const err = error as Error;
             throw new Error(`Password reset failed: ${err.message}`);
         }
     }
 
     async googleLogin(credential: string): Promise<any> {
-        try{
+        try {
             const client = new OAuth2Client(config.googleClientId);
             const ticket = await client.verifyIdToken({
                 idToken: credential,
@@ -150,21 +150,30 @@ export class TutorService {
                 return { success: false, message: "Invalid Google token" };
             }
             const email = payload.email;
-             // Check if email is undefined
+            // Check if email is undefined
             if (!email) {
                 return { success: false, message: "Google account does not have an email address" };
             }
 
             let tutor = await this.tutorRepo.findByEmail(email);
-            if(tutor){
+            if (tutor) {
                 return { success: true, message: "Google login successful", tutor };
-            }else {
+            } else {
                 // Optionally, you could create a new user here
                 return { success: false, message: "Google login failed", tutor };
             }
-        }catch (error) {
+        } catch (error) {
             const err = error as Error;
             throw new Error(`Google  login failed: ${err.message}`);
+        }
+    }
+    async getTutorDetails(tutorId: string): Promise<any> {
+        try {
+            const result = await this.tutorRepo.getTutorDetails(tutorId);
+            return result;
+        } catch (error) {
+            const err = error as Error;
+            throw new Error(`getTutorDetails : ${err.message}`);
         }
     }
 }

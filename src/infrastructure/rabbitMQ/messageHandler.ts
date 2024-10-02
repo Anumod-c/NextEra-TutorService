@@ -50,6 +50,11 @@ export default class MessageHandler {
                 console.log('reached user service for fetching users');
                 response  = await admincontroller.getTutorCount()
                 break;
+            case 'fetchTutorById':
+                console.log('reachd fetchTutorById')
+                response = await tutorcontroller.getTutorDetails(data);
+                console.log('responseeee fetchby tutorid,',response)
+                break;
 
         }
         await RabbitMQClient.produce(response, correlationId, replyTo);

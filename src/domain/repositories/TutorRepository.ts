@@ -91,4 +91,19 @@ export class TutorRepository implements ITutorRepository{
             throw new Error(`Error resetting user password: ${err.message}`);
         }
     }
+    async getTutorDetails(tutorId:string){
+        try {
+            const tutorDetails = await Tutor.findOne({_id:tutorId});
+            console.log('tutorDetails',tutorDetails)
+            if(tutorDetails){
+               
+                return {tutorDetails:tutorDetails,success:true,message:"Fetched tutor details"}
+            }else{
+                return {name:null,success:false,message:"Error fetching tutor details"}
+            }
+        } catch (error) {
+            console.log('Error in fetching tutordetails',error);
+            
+        }
+    }
 }
