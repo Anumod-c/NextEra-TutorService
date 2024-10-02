@@ -74,9 +74,8 @@ class TutorController{
         return result
             
     }
-    async getTutorDetails(tutorData: { tutorId: string }){
+    async getTutorDetails( tutorId: string ){
         try {
-            const { tutorId } = tutorData;
             console.log('raached gettutor details',tutorId);
             
             const result  = await  this.tutorService.getTutorDetails(tutorId);
