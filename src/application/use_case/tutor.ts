@@ -176,4 +176,12 @@ export class TutorService {
             throw new Error(`getTutorDetails : ${err.message}`);
         }
     }
+    async checkTutorBlocked(tutorId:string){
+        try{
+            const result = await this.tutorRepo.checkTutorBlocked(tutorId);
+            return result
+        }catch(error){
+            console.log("Error in isblocked middleware",error)
+        }
+    }
 }

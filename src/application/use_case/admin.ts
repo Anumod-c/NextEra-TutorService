@@ -25,4 +25,12 @@ export class AdminService{
             console.log('error in tutorcount in admin.ts')
         }
     }
+    async changeTutorStatus(data:{tutorId:string;status:boolean;}){
+        try{
+            const result = await this.adminRepo.changeTutorStatus(data)
+            return result
+        }catch(error){
+            console.log('error in change status in admin.ts',error);           
+        }
+    }
 }

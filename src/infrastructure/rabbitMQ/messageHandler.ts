@@ -55,7 +55,11 @@ export default class MessageHandler {
                 response = await tutorcontroller.getTutorDetails(data);
                 console.log('responseeee fetchby tutorid,',response)
                 break;
-
+            case 'changeTutorStatus':
+                response = await  admincontroller.changeTutorStatus(data)
+                break;
+            case 'checkTutorBlocked':
+                response = await tutorcontroller.checkTutorBlocked(data);
         }
         await RabbitMQClient.produce(response, correlationId, replyTo);
     }

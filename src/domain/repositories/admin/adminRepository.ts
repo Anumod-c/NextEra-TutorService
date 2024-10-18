@@ -22,7 +22,7 @@ export class AdminRepository {
     }
     async getTutorCount(){
         try{
-            const tutorCount = await Tutor.find({}).countDocuments();
+            const tutorCount = await Tutor.countDocuments()
             console.log('tutorrcount',tutorCount);
 
             return tutorCount
@@ -30,6 +30,25 @@ export class AdminRepository {
             const err = error as Error;
             console.log("Error tutor get count admin :", err);
             throw new Error(`error tutor get count admin :${err.message}`);   
+        }
+    }
+    async changeTutorStatus(data:{tutorId:string,status:boolean}){
+        try{
+            console.log('reached tutro for chaning status')
+            const updatedTutor = await Tutor.findByIdAndUpdate(data.tutorId,{status:data.status},{new:true});
+
+            if(!updatedTutor){
+                throw new Error("Tutor not found to change status")
+            }
+            return{
+                success:true,
+                message:`Tutor ${data.status ? 'unblocked' : 'blocked'} successfully`,
+                user: updatedTutor,
+            }
+        }catch(error){
+              console.error('Error in Admin Repo (changeStatus):', error);
+            throw new Error('Error in changing tutor status');
+            
         }
     }
 }

@@ -22,6 +22,16 @@ class AdminController{
             console.log('errror in tutoprlist in admincontroller')
         }
     }
+    async changeTutorStatus(data:{tutorId:string;status:boolean}){
+        try{
+           const result = await this.adminService.changeTutorStatus(data);
+           return result
+        }
+        catch(error){
+            console.log('error in changing status',error);
+            
+        }
+    }
 }
 
 

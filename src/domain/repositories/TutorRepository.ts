@@ -52,7 +52,7 @@ export class TutorRepository implements ITutorRepository{
         const isPasswordMatch = await bcrypt.compare(password, tutorData.password);
         if (!isPasswordMatch) {
             console.log(" passord is incorrrect")
-            return { success: false, message: "Login unsuccessfull" }
+            return { success: false, message: "Incorrect passoword" }
         } else {
             console.log("Incorrect passsword for existing tutor")
             return { success: true, message: "Login successfull",tutorData };
@@ -104,6 +104,19 @@ export class TutorRepository implements ITutorRepository{
         } catch (error) {
             console.log('Error in fetching tutordetails',error);
             
+        }
+    }
+    async checkTutorBlocked(tutorId:string){
+        try {
+            const tutor = await Tutor.findOne({ _id: tutorId }); // Use await to resolve the promise
+            if (!tutor) {
+                return { success: false, message: 'No tutor with this tutorId' };
+            }
+            // Assume that the user has a 'status' field that indicates if the user is blocked
+            return { success: true, message: "Tutor found", tutor }; 
+        } catch (error) {
+            console.log("Error in fetching user with tutor id", error);
+            return { success: false, message: 'Internal server error' }; // Handle errors gracefully
         }
     }
 }

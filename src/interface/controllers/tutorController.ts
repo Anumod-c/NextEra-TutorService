@@ -85,7 +85,15 @@ class TutorController{
         }
       
     }
-
+    async checkTutorBlocked(tutorId:string){
+        try {
+            console.log('blavblaa',tutorId)
+            const result = await this.tutorService.checkTutorBlocked(tutorId);
+            return result
+        } catch (error) {
+            console.log('Error in checking tutor blockedmiddleware',error)
+        }
+    }
 }
 
 export const tutorcontroller = new TutorController()
