@@ -33,4 +33,12 @@ export class AdminService{
             console.log('error in change status in admin.ts',error);           
         }
     }
+    async changeVerificationStatus(data:{tutorId:string;isVerified:boolean}){
+        try {
+            const result = await this.adminRepo.changeVerificationStatus(data);
+            return result
+        } catch (error) {
+            console.log("Erorr in changing verification status",error)
+        }
+    }
 }

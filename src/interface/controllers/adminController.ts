@@ -32,6 +32,15 @@ class AdminController{
             
         }
     }
+    async changeVerificationStatus(data:{tutorId:string;isVerified:boolean}){
+        try {
+            console.log('daata from change verification',data)
+            const result = await this.adminService.changeVerificationStatus(data);
+            return result
+        } catch (error) {
+            console.log("Erorr in changing verification status",error)
+        }
+    }
 }
 
 

@@ -1,4 +1,5 @@
 import { TutorService } from "../../application/use_case/tutor";
+import { ITutor } from "../../domain/entites/ITutor";
 
 class TutorController{
     private tutorService = new TutorService;
@@ -92,6 +93,22 @@ class TutorController{
             return result
         } catch (error) {
             console.log('Error in checking tutor blockedmiddleware',error)
+        }
+    }
+    async additonalInfo(tutorData:ITutor){
+        try {
+            const result = await this.tutorService.additonalInfo(tutorData);
+            return result
+        } catch (error) {
+            console.log('Error in saving additoninfo in tutor.Controller',error)
+        }
+    }
+    async editProfile(tutorData:ITutor){
+        try {
+            const result = await  this.tutorService.editProfile(tutorData);
+            return result
+        } catch (error) {
+            console.log('Error in saving editprofile details',error)
         }
     }
 }

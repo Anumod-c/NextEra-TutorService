@@ -5,6 +5,7 @@ import { ITutor } from "../domain/entites/ITutor";
 export interface ITutorDocument extends ITutor,Document{}
 
 const tutorSchema :Schema = new Schema({
+    
     name:{
         type:String,
         required:true,
@@ -20,10 +21,50 @@ const tutorSchema :Schema = new Schema({
         type: String,
         required: true
     },
+    cv:{
+        type:String,
+    },
+    profilePicture:{
+        type:String,
+    },
+    bio:{
+        type:String,
+    },
+    facebook:{
+        type:String,
+    },
+    twitter:{
+        type:String,
+    },
+    linkedin:{
+        type:String,
+    },
+    instagram:{
+        type:String,
+    },
+    qualifications: [
+        {
+            qualification: {
+                type: String,
+            },
+            certificate: {
+                type: String,
+            },
+        },
+    ],
+    expertise: [
+        {
+            type: String,
+        },
+    ],  
     created_at:{
         type:Date,
         required:true,
         default:Date.now
+    },
+    isVerified:{
+        type:Boolean,
+        default:false,
     },
     status:{
         type:Boolean,

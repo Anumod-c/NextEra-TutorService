@@ -10,7 +10,7 @@ export default class Producer{
             })
             console.log('message produced')
         }catch(error){
-            console.log("error in producing message back to apigateway")
+            console.log("error in producing message back to apigateway",error)
         }
     }
     

@@ -184,4 +184,20 @@ export class TutorService {
             console.log("Error in isblocked middleware",error)
         }
     }
+    async additonalInfo(tutorData:ITutor){
+        try {
+            const result =await this.tutorRepo.additonalInfo(tutorData)
+            return result
+        } catch (error) {
+            console.log('Error insaving addtional info in tutor.ts',error)
+        }
+    }
+    async editProfile(tutorData:ITutor){
+        try {
+            const result = await this.tutorRepo.editProfile(tutorData)
+            return result;
+        } catch (error) {
+            console.log('Error in  editing tutuor details in tutor.ts',error)
+        }
+    }
 }

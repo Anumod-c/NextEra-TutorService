@@ -1,6 +1,5 @@
 import { Tutor } from "../../../model/Tutor";
 
-import { ITutor } from "../../entites/ITutor";
 
 
 export class AdminRepository {
@@ -49,6 +48,25 @@ export class AdminRepository {
               console.error('Error in Admin Repo (changeStatus):', error);
             throw new Error('Error in changing tutor status');
             
+        }
+    }
+    async changeVerificationStatus(data:{tutorId:string;isVerified:boolean}){
+        try {
+            const updatedTutor = await Tutor.findByIdAndUpdate(data.tutorId,{isVerified:data.isVerified},{new:true});
+            console.log('updatedtutor',updatedTutor)
+
+
+            if(!updatedTutor){
+                throw new Error("Tutor not found to change verification status")
+            }
+            return{
+                success:true,
+                message:`Tutor ${data.isVerified ? 'Verified' : 'Not Verified'} `,
+                user: updatedTutor,
+            }
+        } catch (error) {
+            console.log("Erorr in changing verification status",error);
+            throw new Error('Error in changing tutor verification status');
         }
     }
 }

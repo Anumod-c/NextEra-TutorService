@@ -40,8 +40,10 @@ export default class MessageHandler {
             case 'tutor_google_login':
                 response = await tutorcontroller.googleLogin(data);
                 break
-
-
+            case 'additonalInfo':
+                response= await tutorcontroller.additonalInfo(data)
+                break;
+          
             case 'get_Tutors':
                 console.log('reached tutor service for fetching tutors');
                 response  = await admincontroller.getTutors()
@@ -58,8 +60,15 @@ export default class MessageHandler {
             case 'changeTutorStatus':
                 response = await  admincontroller.changeTutorStatus(data)
                 break;
+            case 'changeVerificationStatus':
+                response = await admincontroller.changeVerificationStatus(data);
+                break;
             case 'checkTutorBlocked':
                 response = await tutorcontroller.checkTutorBlocked(data);
+                break;
+            case 'editProfile':
+                response = await  tutorcontroller.editProfile(data);
+                break;    
         }
         await RabbitMQClient.produce(response, correlationId, replyTo);
     }

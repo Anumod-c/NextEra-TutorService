@@ -119,4 +119,58 @@ export class TutorRepository implements ITutorRepository{
             return { success: false, message: 'Internal server error' }; // Handle errors gracefully
         }
     }
+    async additonalInfo(tutorData:any){
+        try {
+            console.log('tutorData',tutorData)
+            const tutorId = tutorData.tutorId
+            const updateData ={
+                bio:tutorData.bio,
+                expertise: tutorData.expertise,
+                qualifications: tutorData.qualifications,
+                profilePicture: tutorData.profilePicture,
+                cv: tutorData.cv
+            }
+            const result = await Tutor.findByIdAndUpdate(
+                tutorId,
+                { $set: updateData },
+                { new: true, runValidators: true }
+            );
+            console.log('resulteeee',result)
+            return {success:true,message:"data saved successfully",result}
+        } catch (error) {
+            console.log('Error in saving additional info in tutor.ts', error);
+            throw error;        }
+    }
+   async editProfile(tutorData:any){
+    try {
+        console.log('tutor datareached for edit in  tutor reppo',tutorData)
+        const tutorId = tutorData.id;
+        const updateData ={
+            name:tutorData.name,
+            phone:tutorData.phone,
+            bio:tutorData.bio,
+            expertise: tutorData.expertise,
+            qualifications: tutorData.qualifications,
+            profilePicture: tutorData.profilePicture,
+            cv: tutorData.cv,
+            instagram:tutorData.instagram,
+            linkedin:tutorData.linkedin,
+            twitter:tutorData.twitter,
+            facebook:tutorData.facebook,
+        }
+        const result = await Tutor.findByIdAndUpdate(
+            tutorId,
+            { $set: updateData },
+            { new: true, runValidators: true }
+        );
+        console.log(',result after editing',result)
+        return {success:true,message:"data saved successfully",result}
+
+    } catch (error) {
+        console.log('Error in  editing profile in tutorReopsitory', error);
+        throw error;
+        }
+
+    }
+   
 }
