@@ -46,7 +46,7 @@ export default class MessageHandler {
           
             case 'get_Tutors':
                 console.log('reached tutor service for fetching tutors');
-                response  = await admincontroller.getTutors()
+                response  = await admincontroller.getTutors(data)
                 break;
              case 'get_tutor_count':
                 console.log('reached user service for fetching users');

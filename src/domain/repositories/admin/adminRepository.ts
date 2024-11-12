@@ -7,12 +7,18 @@ export class AdminRepository {
 
 
 
-    async getTutors(){
+    async getTutors(page: number = 1, limit: number){
         try{
-            const tutorData = await Tutor.find({}).sort({_id:-1})
+            const skip = (page - 1) * limit;
+
+            const tutorData = await Tutor.find({}).sort({_id:-1}).skip(skip).limit(limit);
+            const totalCount = await Tutor.countDocuments();
+            const totalPages = Math.ceil(totalCount / limit);
+
             console.log('tutorrcount',tutorData);
 
-            return tutorData
+            return {tutorData,totalPages,
+                currentPage: page,success:true}
         }catch(error){
             const err = error as Error;
             console.log("Error tutor get count admin :", err);

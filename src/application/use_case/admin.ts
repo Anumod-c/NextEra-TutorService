@@ -8,9 +8,10 @@ export class AdminService{
 
 
 
-    async getTutors(){
+    async getTutors(page: number = 1, limit: number){
         try{
-            const result = await this.adminRepo.getTutors();
+            const result = await this.adminRepo.getTutors(page,limit);
+            console.log('gettutors',result)
             return result
         }catch(error){
             console.log('error in tutor in admin.ts')

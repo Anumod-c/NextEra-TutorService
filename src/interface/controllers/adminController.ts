@@ -6,9 +6,10 @@ class AdminController{
         this.adminService = new AdminService();
     }
 
-    async getTutors(){
+    async getTutors(data: {  page: number, limit: number }){
         try{
-            const result  =  await this.adminService.getTutors();
+            const {  page, limit } = data;
+            const result  =  await this.adminService.getTutors(page, limit);
             return result
         }catch(error){
             console.log('errror in tutoprlist in admincontroller')
