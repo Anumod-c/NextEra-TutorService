@@ -4,6 +4,7 @@ import { generateOtp } from "../../utils/generateOtp";
 import config from "../../infrastructure/config/config";
 import { TemporaryTutor } from "../../model/Temptutor";
 import { OAuth2Client } from "google-auth-library";
+import { sendOtpMail } from "../../utils/emailVerifications";
 
 
 
@@ -31,6 +32,8 @@ export class TutorService {
                     otp: otp,
                     tutorData: tutorData
                 });
+                const {email,name}= tutorData
+                await sendOtpMail(email,name,otp)
                 await temporaryTutor.save();
                 return { message: "Verify the otp to complete registeration", forgotPass, success: true, otp, tutorData }
             }
